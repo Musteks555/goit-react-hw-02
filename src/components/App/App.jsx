@@ -22,8 +22,8 @@ function App() {
         }
     });
 
-    const [totalFeedback, setTotalFeedback] = useState(0);
-    const [positive, setPositive] = useState(0);
+    // const [totalFeedback, setTotalFeedback] = useState(0);
+    // const [positive, setPositive] = useState(0);
 
     const updateFeedback = (feedbackType) => {
         setValues({
@@ -44,19 +44,15 @@ function App() {
         localStorage.setItem("values", JSON.stringify(values));
     }, [values]);
 
-    useEffect(() => {
-        setTotalFeedback(values.good + values.neutral + values.bad);
-    }, [values]);
+    const totalFeedback = values.good + values.neutral + values.bad;
 
-    useEffect(() => {
-        setPositive(Math.round(((values.good + values.neutral) / totalFeedback) * 100));
-    }, [values, totalFeedback]);
+    const positivePercent = Math.round(((values.good + values.neutral) / totalFeedback) * 100);
 
     return (
         <>
             <Description />
             <Options updateFeedback={updateFeedback} totalFeedback={totalFeedback} resetFeedback={resetFeedback} />
-            {totalFeedback ? <Feedback values={values} totalFeedback={totalFeedback} positive={positive} /> : <Notification />}
+            {totalFeedback ? <Feedback values={values} totalFeedback={totalFeedback} positive={positivePercent} /> : <Notification />}
         </>
     );
 }
